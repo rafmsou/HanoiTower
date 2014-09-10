@@ -1,0 +1,23 @@
+1 => Torre Direita
+2 => Torre Esquerda
+1 => Torre Esquerda
+3 => Torre Direita
+Torre completa True
+Torre completa True
+1 => Torre Central
+2 => Torre Direita
+1 => Torre Direita
+4 => Torre Esquerda
+Torre completa True
+Torre completa True
+1 => Torre Esquerda
+2 => Torre Central
+1 => Torre Central
+3 => Torre Esquerda
+1 => Torre Direita
+2 => Torre Esquerda
+1 => Torre Esquerda
+5 => Torre Direita
+Torre completa True
+Torre completa True
+1 => Torre Central
