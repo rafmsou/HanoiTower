@@ -1,160 +1,160 @@
 from collections import deque
-from torre import Torre 
+from tower import Tower
 
-discos = range(1, 8)
+discs = range(1, 8)
 
-torre_esq = Torre('Torre Esquerda')
-torre_central = Torre('Torre Central', sorted(discos, reverse=True))
-torre_dir = Torre('Torre Direita')
+left_tower = Tower('Torre Esquerda')
+central_tower = Tower('Torre Central', sorted(discs, reverse=True))
+right_tower = Tower('Torre Direita')
 
-joga_1 = True
-    
+disc_1_mutex = True
+
 class THanoi:
-    def torre_apta(self, d, torre):
-        if len(torre) == 0:
+    def able_tower(self, d, tower):
+        if len(tower) == 0:
             return True
-        valor = torre[len(torre) - 1]
-        if d > valor: 
+        value = tower[len(tower) - 1]
+        if d > value:
             return False
         return True
- 
-    def encaminha_jogada(self, d):
-        if d in torre_dir:
-            self.melhor_jogada(d, torre_esq, torre_central)
-        elif d in torre_central: 
-            self.melhor_jogada(d, torre_dir, torre_esq)
-        elif d in torre_esq: 
-            self.melhor_jogada(d, torre_dir, torre_central)
-    
-    def torre_completa(self, torre):
-        num_elements = len(torre)
+
+    def forward_move(self, d):
+        if d in right_tower:
+            self.best_move(d, left_tower, central_tower)
+        elif d in central_tower:
+            self.best_move(d, right_tower, left_tower)
+        elif d in left_tower:
+            self.best_move(d, right_tower, central_tower)
+
+    def tower_complete(self, tower):
+        num_elements = len(tower)
         if num_elements == 0:
             return False
-        completa = (num_elements == (torre[0] - torre[num_elements - 1]) + 1)
-        print 'Torre completa', completa
-        return completa
-     
-    def ciclo_completo(self):
-           td_completa = self.torre_completa(torre_dir)
-           te_completa = self.torre_completa(torre_esq)
-           if(td_completa and te_completa):
-               if(len(torre_dir) == 1 and torre_dir[0] == max(torre_esq) + 1):
+        complete = (num_elements == (tower[0] - tower[num_elements - 1]) + 1)
+        print 'Tower complete', complete
+        return complete
+
+    def complete_cycle(self):
+           right_tower_complete = self.tower_complete(right_tower)
+           left_tower_complete = self.tower_complete(left_tower)
+           if(right_tower_complete and left_tower_complete):
+               if(len(right_tower) == 1 and right_tower[0] == max(left_tower) + 1):
                    return True
-               if(len(torre_esq) == 1 and torre_esq[0] == max(torre_dir) + 1):
+               if(len(left_tower) == 1 and left_tower[0] == max(right_tower) + 1):
                    return True
            return False
-    
-    def torre_primeiro_mov(self, d):
-        torre = self.obter_torre(d)
-        length = len(torre)
+
+    def tower_first_move(self, d):
+        tower = self.get_tower(d)
+        length = len(tower)
         if length % 2 == 0:
-            return torre_central
+            return central_tower
         else:
-            return self.obter_torre_oposta(torre)
-        
-    def obter_torre_oposta(self, torre):
-        if torre.name == 'Torre Esquerda':
-            return torre_dir
-        if torre.name == 'Torre Direita':
-            return torre_esq
-                
-    def melhor_jogada(self, d, torreA, torreB):
-        if not self.torre_apta(d, torreA):
-             self.move_disco(d, torreB)
+            return self.get_opposite_tower(tower)
+
+    def get_opposite_tower(self, tower):
+        if tower.name == 'Torre Esquerda':
+            return right_tower
+        if tower.name == 'Torre Direita':
+            return left_tower
+
+    def best_move(self, d, tower_a, tower_b):
+        if not self.able_tower(d, tower_a):
+             self.move_disc(d, tower_b)
              return
-        if not self.torre_apta(d, torreB):
-             self.move_disco(d, torreA)
+        if not self.able_tower(d, tower_b):
+             self.move_disc(d, tower_a)
              return
-         
-        dA = self.topo(torreA)
-        dB = self.topo(torreB)
-        
-        par_esperando = ((dA - 1) == d) or ((dB - 1) == d)
-        
-        if dB == 0 and not par_esperando:
-            self.move_disco(d, torreB)
-        elif dA == 0 and not par_esperando:
-            self.move_disco(d, torreA)
+
+        disc_on_a = self.top(tower_a)
+        disc_on_b = self.top(tower_b)
+
+        parent_waiting = ((disc_on_a - 1) == d) or ((disc_on_b - 1) == d)
+
+        if disc_on_b == 0 and not parent_waiting:
+            self.move_disc(d, tower_b)
+        elif disc_on_a == 0 and not parent_waiting:
+            self.move_disc(d, tower_a)
         else:
             #two possible moves!
-            if (dA - 1) == d:
-                self.move_disco(d, torreA)
-            elif (dB - 1) == d:
-                self.move_disco(d, torreB)
-            elif self.ciclo_completo():
-                torre = self.torre_primeiro_mov(d)
-                self.move_disco(d, torre)
+            if (disc_on_a - 1) == d:
+                self.move_disc(d, tower_a)
+            elif (disc_on_b - 1) == d:
+                self.move_disc(d, tower_b)
+            elif self.complete_cycle():
+                tower = self.tower_first_move(d)
+                self.move_disc(d, tower)
             else:
-                self.realiza_jogada_complexa(d, torreA, torreB)
-                                                                            
-    def realiza_jogada_complexa(self, d, torreA, torreB):
-        indiceProxDoAtual = (d + 1)
-        indiceProxProx = (d + 2)
-        torreAtual = self.obter_torre(d)
-        penultimoDisco = torreAtual[len(torreAtual) - 2]
-        if d == (penultimoDisco - 1):
-            if self.obter_torre(indiceProxProx) == torreA:
-                self.move_disco(d, torreB)
+                self.complex_move(d, tower_a, tower_b)
+
+    def complex_move(self, d, tower_a, tower_b):
+        parent_disc_index = (d + 1)
+        grandpa_disc_index = (d + 2)
+        current_tower = self.get_tower(d)
+        second_last_disc = current_tower[len(current_tower) - 2]
+        if d == (second_last_disc - 1):
+            if self.get_tower(grandpa_disc_index) == tower_a:
+                self.move_disc(d, tower_b)
             else:
-                self.move_disco(d, torreA)
-        
-    def obter_torre(self, d):
-        if d in torre_dir:
-            return torre_dir
-        elif d in torre_central: 
-            return torre_central
-        elif d in torre_esq: 
-            return torre_esq
-        
-    def topo(self, torre):
-        if len(torre) == 0:
+                self.move_disc(d, tower_a)
+
+    def get_tower(self, d):
+        if d in right_tower:
+            return right_tower
+        elif d in central_tower:
+            return central_tower
+        elif d in left_tower:
+            return left_tower
+
+    def top(self, tower):
+        if len(tower) == 0:
             return 0
-        valor = torre[len(torre) - 1]
-        return valor
-       
-    def move_disco(self, d, torre):
-        if d in torre_esq:
-            torre_esq.pop()
-        if d in torre_central:
-            torre_central.pop()
-        if d in torre_dir:
-            torre_dir.pop()
-        
-        self.escreve_movimento(d, torre)
-        torre.append(d)
-    
-    def escreve_movimento(self, d, torre):
-        print d, '=>', torre
-            
-    def executa_movimento(self):
-        global joga_1          
-        if joga_1:
-            self.encaminha_jogada(1)
-            joga_1 = False
+        value = tower[len(tower) - 1]
+        return value
+
+    def move_disc(self, d, tower):
+        if d in left_tower:
+            left_tower.pop()
+        if d in central_tower:
+            central_tower.pop()
+        if d in right_tower:
+            right_tower.pop()
+
+        self.write_movement(d, tower)
+        tower.append(d)
+
+    def write_movement(self, d, tower):
+        print d, '=>', tower
+
+    def move(self):
+        global disc_1_mutex
+        if disc_1_mutex:
+            self.forward_move(1)
+            disc_1_mutex = False
         else:
-            dE = self.topo(torre_esq)
-            dC = self.topo(torre_central)
-            dD = self.topo(torre_dir)
-            values = [v for v in [dE, dC, dD] if v != 1 and v > 0]
+            disc_on_left = self.top(left_tower)
+            disc_on_center = self.top(central_tower)
+            disc_on_right = self.top(right_tower)
+            values = [v for v in [disc_on_left, disc_on_center, disc_on_right] if v != 1 and v > 0]
             minValue = min(values)
-            self.encaminha_jogada(minValue)
-            joga_1 = True
-        
+            self.forward_move(minValue)
+            disc_1_mutex = True
+
 th = THanoi()
-th.executa_movimento()
-th.executa_movimento()
-th.executa_movimento()
-th.executa_movimento()
-th.executa_movimento()
-th.executa_movimento()
-th.executa_movimento()
-th.executa_movimento()
-th.executa_movimento()
-th.executa_movimento()
-th.executa_movimento()
-th.executa_movimento()
-th.executa_movimento()
-th.executa_movimento()
-th.executa_movimento()
-th.executa_movimento()
-th.executa_movimento()
+th.move()
+th.move()
+th.move()
+th.move()
+th.move()
+th.move()
+th.move()
+th.move()
+th.move()
+th.move()
+th.move()
+th.move()
+th.move()
+th.move()
+th.move()
+th.move()
+th.move()
