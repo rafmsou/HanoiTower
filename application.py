@@ -9,10 +9,13 @@ class Application(tk.Frame):
         self.createWidgets()
 
     def createWidgets(self):
-        self.canvas = tk.Canvas(self, height = 200, width = 400)
+        self.canvas = tk.Canvas(self, height = 350, width = 600)
         self.canvas.grid(column = 0)
         self.quitButton = tk.Button(self, text='Quit',command=self.quit)
         self.quitButton.grid(column = 1)
+
+        self.photo = tk.PhotoImage(file = './discs_base.gif')
+        self.canvas.create_image(330,200, image=self.photo)
 
         t = Thread(target=self.move_rect)
         t.start()
