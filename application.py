@@ -14,23 +14,32 @@ class Application(tk.Frame):
         self.quitButton = tk.Button(self, text='Quit',command=self.quit)
         self.quitButton.grid(column = 1)
 
+        self.coordsLabelValue = tk.StringVar()
+        self.coordsLabel = tk.Label(self, textvariable=self.coordsLabelValue)
+        self.coordsLabel.grid(row = 1, columnspan = 2)
+
         self.photo = tk.PhotoImage(file = './discs_base.gif')
         self.canvas.create_image(330,200, image=self.photo)
+
+        self.canvas.bind('<Motion>', self.print_current_coords)
 
         t = Thread(target=self.move_rect)
         t.start()
 
+    def print_current_coords(self, event):
+        x = self.canvas.canvasx(event.x)
+        y = self.canvas.canvasy(event.y)
+        self.coordsLabelValue.set('x: {} y: {}'.format(x, y))
+
     def move_rect(self):
 
-        rect = self.canvas.create_rectangle(150, 20, 200, 70)
+        o = self.canvas.create_oval(170, 225, 250, 240)
 
-        for i in xrange(1, 100):
-            x0, y0, x1, y1 = self.canvas.coords(rect)
-            self.canvas.move(rect, -1, 0)
-            self.canvas.update()
-            time.sleep(0.025)
+        # for i in xrange(1, 100):
+        #     self.canvas.move(o, -1, 0)
+        #     self.canvas.update()
+        #     time.sleep(0.025)self.quit()
 
-        self.quit()
 
 app = Application()
 app.master.title('Sample application')
