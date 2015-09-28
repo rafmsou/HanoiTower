@@ -8,13 +8,30 @@ class Application(tk.Frame):
         self.grid()
 
         #disc configuration
+        self.discs = []
         self.discsLength = 7
-        self.discWidthDiameterStart = 40
-        self.discWidthDiameterOffset = 10
-        self.discHeightDiameter = 20
 
+        #tower configuration
+        self.towersBasePoint = [[165, 219],[275, 219],[385, 219]]
 
         self.createWidgets()
+
+    def initializeDiscs(self):
+        baseWidthDiameter = 100
+        widthDiameter = baseWidthDiameter
+        widthDiameterOffset = 10
+        heightDiameter = 20
+
+        xOffset = 5
+        yOffset = 10
+
+        x, y = self.towersBasePoint[1]
+
+        for i in range(0, self.discsLength):
+            self.discs.append(self.create_disc(x, y, widthDiameter, heightDiameter))
+            x += xOffset
+            y -= yOffset
+            widthDiameter -= widthDiameterOffset
 
     def createWidgets(self):
         self.canvas = tk.Canvas(self, height = 350, width = 600)
@@ -31,29 +48,7 @@ class Application(tk.Frame):
 
         self.canvas.bind('<Motion>', self.print_current_coords)
 
-        self.canvas.disc1 = self.create_disc(195, 130, 40, 20)
-        self.canvas.disc2 = self.create_disc(190, 145, 50, 20)
-        self.canvas.disc3 = self.create_disc(185, 160, 60, 20)
-        self.canvas.disc4 = self.create_disc(180, 175, 70, 20)
-        self.canvas.disc5 = self.create_disc(175, 190, 80, 20)
-        self.canvas.disc6 = self.create_disc(170, 205, 90, 20)
-        self.canvas.disc7 = self.create_disc(165, 220, 100, 20)
-
-        self.canvas.disc11 = self.create_disc(305, 130, 40, 20)
-        self.canvas.disc12 = self.create_disc(300, 145, 50, 20)
-        self.canvas.disc13 = self.create_disc(295, 160, 60, 20)
-        self.canvas.disc14 = self.create_disc(290, 175, 70, 20)
-        self.canvas.disc15 = self.create_disc(285, 190, 80, 20)
-        self.canvas.disc16 = self.create_disc(280, 205, 90, 20)
-        self.canvas.disc17 = self.create_disc(275, 220, 100, 20)
-
-        self.canvas.disc11 = self.create_disc(415, 130, 40, 20)
-        self.canvas.disc12 = self.create_disc(410, 145, 50, 20)
-        self.canvas.disc13 = self.create_disc(405, 160, 60, 20)
-        self.canvas.disc14 = self.create_disc(400, 175, 70, 20)
-        self.canvas.disc15 = self.create_disc(395, 190, 80, 20)
-        self.canvas.disc16 = self.create_disc(390, 205, 90, 20)
-        self.canvas.disc17 = self.create_disc(385, 220, 100, 20)
+        self.initializeDiscs()
 
         #t = Thread(target=self.move_rect)
         #t.start()
@@ -72,12 +67,20 @@ class Application(tk.Frame):
         disc = self.canvas.create_oval(x0, y0, x1, y1)
         return disc
 
-    def move_rect(self):
-        for i in xrange(1, 100):
-            self.canvas.move(o, -1, 0)
+    def move_disc(self, disc, direction, amount):
+
+        for i in xrange(1, amount):
+            if direction == 'left':
+                self.canvas.move(disc, -1, 0)
+            elif direction == 'right':
+                self.canvas.move(disc, 1, 0)
+            elif direction == 'up':
+                self.canvas.move(disc, 0, -1)
+            elif direction == 'down':
+                self.canvas.move(disc, 0, 1)
+
             self.canvas.update()
             time.sleep(0.025)
-            self.quit()
 
 app = Application()
 app.master.title('Sample application')
