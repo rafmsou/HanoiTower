@@ -1,15 +1,16 @@
 from collections import deque
 from tower import Tower
 
-discs = range(1, 8)
+class HanoiGame:
 
-left_tower = Tower('Torre Esquerda')
-central_tower = Tower('Torre Central', sorted(discs, reverse=True))
-right_tower = Tower('Torre Direita')
+    def __init__(self):
+        discs = range(1, 8)
+        self.left_tower = Tower('Torre Esquerda', 0)
+        self.central_tower = Tower('Torre Central', 1, sorted(discs, reverse=True))
+        self.right_tower = Tower('Torre Direita', 2)
+        self.disc_1_mutex = True
 
-disc_1_mutex = True
 
-class THanoi:
     def able_tower(self, d, tower):
         if len(tower) == 0:
             return True
@@ -19,12 +20,12 @@ class THanoi:
         return True
 
     def forward_move(self, d):
-        if d in right_tower:
-            self.best_move(d, left_tower, central_tower)
-        elif d in central_tower:
-            self.best_move(d, right_tower, left_tower)
-        elif d in left_tower:
-            self.best_move(d, right_tower, central_tower)
+        if d in self.right_tower:
+            self.best_move(d, self.left_tower, self.central_tower)
+        elif d in self.central_tower:
+            self.best_move(d, self.right_tower, self.left_tower)
+        elif d in self.left_tower:
+            self.best_move(d, self.right_tower, self.central_tower)
 
     def tower_complete(self, tower):
         num_elements = len(tower)
@@ -35,12 +36,12 @@ class THanoi:
         return complete
 
     def complete_cycle(self):
-           right_tower_complete = self.tower_complete(right_tower)
-           left_tower_complete = self.tower_complete(left_tower)
+           right_tower_complete = self.tower_complete(self.right_tower)
+           left_tower_complete = self.tower_complete(self.left_tower)
            if(right_tower_complete and left_tower_complete):
-               if(len(right_tower) == 1 and right_tower[0] == max(left_tower) + 1):
+               if(len(self.right_tower) == 1 and self.right_tower[0] == max(self.left_tower) + 1):
                    return True
-               if(len(left_tower) == 1 and left_tower[0] == max(right_tower) + 1):
+               if(len(self.left_tower) == 1 and self.left_tower[0] == max(self.right_tower) + 1):
                    return True
            return False
 
@@ -48,15 +49,15 @@ class THanoi:
         tower = self.get_tower(d)
         length = len(tower)
         if length % 2 == 0:
-            return central_tower
+            return self.central_tower
         else:
             return self.get_opposite_tower(tower)
 
     def get_opposite_tower(self, tower):
         if tower.name == 'Torre Esquerda':
-            return right_tower
+            return self.right_tower
         if tower.name == 'Torre Direita':
-            return left_tower
+            return self.left_tower
 
     def best_move(self, d, tower_a, tower_b):
         if not self.able_tower(d, tower_a):
@@ -99,12 +100,12 @@ class THanoi:
                 self.move_disc(d, tower_a)
 
     def get_tower(self, d):
-        if d in right_tower:
-            return right_tower
-        elif d in central_tower:
-            return central_tower
-        elif d in left_tower:
-            return left_tower
+        if d in self.right_tower:
+            return self.right_tower
+        elif d in self.central_tower:
+            return self.central_tower
+        elif d in self.left_tower:
+            return self.left_tower
 
     def top(self, tower):
         if len(tower) == 0:
@@ -113,12 +114,12 @@ class THanoi:
         return value
 
     def move_disc(self, d, tower):
-        if d in left_tower:
-            left_tower.pop()
-        if d in central_tower:
-            central_tower.pop()
-        if d in right_tower:
-            right_tower.pop()
+        if d in self.left_tower:
+            self.left_tower.pop()
+        if d in self.central_tower:
+            self.central_tower.pop()
+        if d in self.right_tower:
+            self.right_tower.pop()
 
         self.write_movement(d, tower)
         tower.append(d)
@@ -127,20 +128,20 @@ class THanoi:
         print d, '=>', tower
 
     def move(self):
-        global disc_1_mutex
-        if disc_1_mutex:
+        self.disc_1_mutex
+        if self.disc_1_mutex:
             self.forward_move(1)
-            disc_1_mutex = False
+            self.disc_1_mutex = False
         else:
-            disc_on_left = self.top(left_tower)
-            disc_on_center = self.top(central_tower)
-            disc_on_right = self.top(right_tower)
+            disc_on_left = self.top(self.left_tower)
+            disc_on_center = self.top(self.central_tower)
+            disc_on_right = self.top(self.right_tower)
             values = [v for v in [disc_on_left, disc_on_center, disc_on_right] if v != 1 and v > 0]
             minValue = min(values)
             self.forward_move(minValue)
-            disc_1_mutex = True
+            self.disc_1_mutex = True
 
-th = THanoi()
+th = HanoiGame()
 th.move()
 th.move()
 th.move()

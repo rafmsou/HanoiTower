@@ -18,8 +18,12 @@ class Application(tk.Frame):
         self.createWidgets()
 
     def start(self):
-        t = Thread(target=self.moveDiscToTower, args=(self.discs[6], 2))
+        t = Thread(target=self.start_async)
         t.start()
+
+    def start_async(self):
+        self.moveDiscToTower(self.discs[5], 2, 1)
+        self.moveDiscToTower(self.discs[6], 2, 2)
 
     def initializeDiscs(self):
         baseWidthDiameter = 100
@@ -60,7 +64,6 @@ class Application(tk.Frame):
 
         self.initializeDiscs()
 
-
     def printCurrentCoords(self, event):
         x = self.canvas.canvasx(event.x)
         y = self.canvas.canvasy(event.y)
@@ -87,23 +90,25 @@ class Application(tk.Frame):
             elif direction == 'down':
                 self.canvas.move(disc, 0, 1)
 
-            #self.canvas.update()
-            time.sleep(0.025)
+            self.canvas.update()
+            time.sleep(0.010)
 
-    def moveDiscToTower(self, disc, tower):
+    def moveDiscToTower(self, disc, tower, x):
         discCurrentTower = 1
         discDestinationTower = tower
         #discDestinationPosition = len(tower) + 1
-        discDestinationPosition = 1
-        upLimit = 110
+        discDestinationPosition = x
+        moveUpLimit = 110
         discX0, discY0, discX1, discY1 = self.canvas.coords(disc)
         discWidth = discX1 - discX0
         towerX, towerY = self.towersLocation[tower]
 
-        upAmount = int(discY0 - upLimit)
+        upAmount = int(discY0 - moveUpLimit)
         moveAmount = int(math.fabs(towerX - discX0) - (discWidth / 2))
         moveDirection = 'right' if discCurrentTower < discDestinationTower else 'left'
-        downAmount = towerY - upLimit
+
+        baseToDestinationDistance = (discDestinationPosition -  1) * 10
+        downAmount = (towerY - moveUpLimit) - baseToDestinationDistance
 
         self.moveDisc(disc, 'up', upAmount)
         self.moveDisc(disc, moveDirection, moveAmount)
