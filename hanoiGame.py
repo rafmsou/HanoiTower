@@ -1,9 +1,11 @@
 from collections import deque
 from tower import Tower
+from hanoiGameGui import HanoiGameGui
 
-class HanoiGame:
+class HanoiGame(HanoiGameGui):
 
-    def __init__(self):
+    def __init__(self, canvas):
+        super(HanoiGame, self).__init__(canvas)
         discs = range(1, 8)
         self.left_tower = Tower('Torre Esquerda', 0)
         self.central_tower = Tower('Torre Central', 1, sorted(discs, reverse=True))
@@ -122,6 +124,8 @@ class HanoiGame:
             self.right_tower.pop()
 
         self.write_movement(d, tower)
+        super(HanoiGame, self).moveDiscToTower(d, tower)
+
         tower.append(d)
 
     def write_movement(self, d, tower):
@@ -141,21 +145,5 @@ class HanoiGame:
             self.forward_move(minValue)
             self.disc_1_mutex = True
 
-th = HanoiGame()
-th.move()
-th.move()
-th.move()
-th.move()
-th.move()
-th.move()
-th.move()
-th.move()
-th.move()
-th.move()
-th.move()
-th.move()
-th.move()
-th.move()
-th.move()
-th.move()
-th.move()
+# th = HanoiGame()
+# th.move()

@@ -1,53 +1,18 @@
 import Tkinter as tk
-import time
-import math
 from threading import Thread
+from hanoiGame import HanoiGame
 
 class Application(tk.Frame):
     def __init__(self, master=None):
         tk.Frame.__init__(self, master)
         self.grid()
-
-        #disc configuration
-        self.discs = []
-        self.discsLength = 7
-
-        #tower configuration
-        self.towersLocation = [[216, 219],[326, 219],[437, 219]]
-
         self.createWidgets()
-
-    def start(self):
-        t = Thread(target=self.start_async)
-        t.start()
-
-    def start_async(self):
-        self.moveDiscToTower(self.discs[5], 2, 1)
-        self.moveDiscToTower(self.discs[6], 2, 2)
-
-    def initializeDiscs(self):
-        baseWidthDiameter = 100
-        widthDiameter = baseWidthDiameter
-        widthDiameterOffset = 10
-        heightDiameter = 20
-
-        xOffset = 5
-        yOffset = 10
-
-        x, y = self.towersLocation[1]
-        x -= (baseWidthDiameter / 2)
-
-        for i in range(0, self.discsLength):
-            self.discs.append(self.createDisc(x, y, widthDiameter, heightDiameter))
-            x += xOffset
-            y -= yOffset
-            widthDiameter -= widthDiameterOffset
 
     def createWidgets(self):
         self.canvas = tk.Canvas(self, height = 350, width = 600)
         self.canvas.grid(column = 0)
 
-        self.startButton = tk.Button(self, text='Start',command=self.start)
+        self.startButton = tk.Button(self, text='Start')
         self.startButton.grid(column = 1)
 
         self.quitButton = tk.Button(self, text='Quit',command=self.quit)
@@ -62,57 +27,15 @@ class Application(tk.Frame):
 
         self.canvas.bind('<Motion>', self.printCurrentCoords)
 
-        self.initializeDiscs()
+        self.hanoiGame = HanoiGame(self.canvas)
+        self.hanoiGame.initializeDiscs()
+        self.hanoiGame.move()
+        self.hanoiGame.move()
 
     def printCurrentCoords(self, event):
         x = self.canvas.canvasx(event.x)
         y = self.canvas.canvasy(event.y)
         self.coordsLabelValue.set('x: {} y: {}'.format(x, y))
-
-    def createDisc(self, x, y, width, height):
-        x0 = x
-        y0 = y
-        x1 = x + width
-        y1 = y + height
-
-        disc = self.canvas.create_oval(x0, y0, x1, y1)
-        return disc
-
-    def moveDisc(self, disc, direction, amount):
-
-        for i in xrange(1, amount):
-            if direction == 'left':
-                self.canvas.move(disc, -1, 0)
-            elif direction == 'right':
-                self.canvas.move(disc, 1, 0)
-            elif direction == 'up':
-                self.canvas.move(disc, 0, -1)
-            elif direction == 'down':
-                self.canvas.move(disc, 0, 1)
-
-            self.canvas.update()
-            time.sleep(0.010)
-
-    def moveDiscToTower(self, disc, tower, x):
-        discCurrentTower = 1
-        discDestinationTower = tower
-        #discDestinationPosition = len(tower) + 1
-        discDestinationPosition = x
-        moveUpLimit = 110
-        discX0, discY0, discX1, discY1 = self.canvas.coords(disc)
-        discWidth = discX1 - discX0
-        towerX, towerY = self.towersLocation[tower]
-
-        upAmount = int(discY0 - moveUpLimit)
-        moveAmount = int(math.fabs(towerX - discX0) - (discWidth / 2))
-        moveDirection = 'right' if discCurrentTower < discDestinationTower else 'left'
-
-        baseToDestinationDistance = (discDestinationPosition -  1) * 10
-        downAmount = (towerY - moveUpLimit) - baseToDestinationDistance
-
-        self.moveDisc(disc, 'up', upAmount)
-        self.moveDisc(disc, moveDirection, moveAmount)
-        self.moveDisc(disc, 'down', downAmount)
 
 
 app = Application()
