@@ -9,9 +9,10 @@ class HanoiGameGui(object):
         #disc configuration
         self.discs = []
         self.discsLength = 7
+        self.discsColor = ['#e6dbb1','#e8e2cc']
 
         #tower configuration
-        self.towersLocation = [[215, 219],[326, 219],[437, 219]]
+        self.towersLocation = [[214, 217],[326, 217],[437, 217]]
 
     def initializeDiscs(self):
         baseWidthDiameter = 100
@@ -26,7 +27,8 @@ class HanoiGameGui(object):
         x -= (baseWidthDiameter / 2)
 
         for i in reversed(range(0, self.discsLength)):
-            disc = self.createDisc(i, x, y, widthDiameter, heightDiameter)
+            #disc index is not zero based, that's why '(i + 1)' below
+            disc = self.createDisc((i + 1), x, y, widthDiameter, heightDiameter)
             self.discs.append(disc)
             x += xOffset
             y -= yOffset
@@ -38,7 +40,9 @@ class HanoiGameGui(object):
         x1 = x + width
         y1 = y + height
 
-        disc = self.canvas.create_oval(x0, y0, x1, y1)
+        colorFill = self.discsColor[index % 2]
+
+        disc = self.canvas.create_oval(x0, y0, x1, y1, outline='red', fill=colorFill, width=2)
         return DiscGui(disc, index)
 
     def moveDisc(self, disc, direction, amount):
@@ -54,12 +58,12 @@ class HanoiGameGui(object):
                 self.canvas.move(disc, 0, 1)
 
             self.canvas.update()
-            time.sleep(0.001)
+            time.sleep(0.019)
 
     def moveDiscToTower(self, disc, tower):
 
         # gets the disc GUI element from self.discs with the given index
-        discGUI = [d for d in self.discs if d.index == (disc - 1)][0]
+        discGUI = [d for d in self.discs if d.index == disc][0]
 
         discCurrentTower = discGUI.currentTower
         discDestinationTower = tower.index

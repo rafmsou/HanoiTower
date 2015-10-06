@@ -12,10 +12,10 @@ class Application(tk.Frame):
         self.canvas = tk.Canvas(self, height = 350, width = 600)
         self.canvas.grid(column = 0)
 
-        self.startButton = tk.Button(self, text='Start')
-        self.startButton.grid(column = 1)
+        # self.startButton = tk.Button(self, text='Start')
+        # self.startButton.grid(column = 1)
 
-        self.quitButton = tk.Button(self, text='Quit',command=self.quit)
+        self.quitButton = tk.Button(self, text='Quit',command=self.quit, width=10)
         self.quitButton.grid(column = 1)
 
         self.coordsLabelValue = tk.StringVar()
