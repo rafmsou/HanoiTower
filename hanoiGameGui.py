@@ -1,4 +1,4 @@
-import time, math
+import math
 from discGui import DiscGui
 
 class HanoiGameGui(object):
@@ -47,18 +47,20 @@ class HanoiGameGui(object):
 
     def moveDisc(self, disc, direction, amount):
 
-        for i in xrange(1, amount):
+        m,i = 2,0
+        while i < amount:
             if direction == 'left':
-                self.canvas.move(disc, -1, 0)
+                self.canvas.move(disc, m*-1, 0)
             elif direction == 'right':
-                self.canvas.move(disc, 1, 0)
+                self.canvas.move(disc, m, 0)
             elif direction == 'up':
-                self.canvas.move(disc, 0, -1)
+                self.canvas.move(disc, 0, m*-1)
             elif direction == 'down':
-                self.canvas.move(disc, 0, 1)
+                self.canvas.move(disc, 0, m)
 
             self.canvas.update()
-            time.sleep(0.019)
+            i += m
+
 
     def moveDiscToTower(self, disc, tower):
 
