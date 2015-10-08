@@ -29,6 +29,36 @@ class HanoiGame(HanoiGameGui):
         elif d in self.left_tower:
             self.best_move(d, self.right_tower, self.central_tower)
 
+    def best_move(self, d, tower_a, tower_b):
+        if not self.able_tower(d, tower_a):
+             self.move_disc(d, tower_b)
+             return
+        if not self.able_tower(d, tower_b):
+             self.move_disc(d, tower_a)
+             return
+
+        disc_on_a = self.top(tower_a)
+        disc_on_b = self.top(tower_b)
+
+        parent_waiting = ((disc_on_a - 1) == d) or ((disc_on_b - 1) == d)
+
+        if disc_on_b == 0 and not parent_waiting:
+            self.move_disc(d, tower_b)
+        elif disc_on_a == 0 and not parent_waiting:
+            self.move_disc(d, tower_a)
+        else:
+            #two possible moves!
+            if (disc_on_a - 1) == d:
+                self.move_disc(d, tower_a)
+            elif (disc_on_b - 1) == d:
+                self.move_disc(d, tower_b)
+            elif self.complete_cycle():
+                tower = self.tower_first_move(d)
+                self.move_disc(d, tower)
+            else:
+                self.complex_move(d, tower_a, tower_b)
+
+
     def tower_complete(self, tower):
         num_elements = len(tower)
         if num_elements == 0:
@@ -60,35 +90,6 @@ class HanoiGame(HanoiGameGui):
             return self.right_tower
         if tower.name == 'Torre Direita':
             return self.left_tower
-
-    def best_move(self, d, tower_a, tower_b):
-        if not self.able_tower(d, tower_a):
-             self.move_disc(d, tower_b)
-             return
-        if not self.able_tower(d, tower_b):
-             self.move_disc(d, tower_a)
-             return
-
-        disc_on_a = self.top(tower_a)
-        disc_on_b = self.top(tower_b)
-
-        parent_waiting = ((disc_on_a - 1) == d) or ((disc_on_b - 1) == d)
-
-        if disc_on_b == 0 and not parent_waiting:
-            self.move_disc(d, tower_b)
-        elif disc_on_a == 0 and not parent_waiting:
-            self.move_disc(d, tower_a)
-        else:
-            #two possible moves!
-            if (disc_on_a - 1) == d:
-                self.move_disc(d, tower_a)
-            elif (disc_on_b - 1) == d:
-                self.move_disc(d, tower_b)
-            elif self.complete_cycle():
-                tower = self.tower_first_move(d)
-                self.move_disc(d, tower)
-            else:
-                self.complex_move(d, tower_a, tower_b)
 
     def complex_move(self, d, tower_a, tower_b):
         parent_disc_index = (d + 1)
