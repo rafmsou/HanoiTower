@@ -15,6 +15,9 @@ class HanoiGameGui(object):
         self.towersLocation = [[214, 217],[326, 217],[437, 217]]
 
     def initializeDiscs(self):
+        if self.canvas == None:
+            return
+
         baseWidthDiameter = 100
         widthDiameter = baseWidthDiameter
         widthDiameterOffset = 10
@@ -47,7 +50,7 @@ class HanoiGameGui(object):
 
     def moveDisc(self, disc, direction, amount):
 
-        m,i = 2,0
+        m,i = 10,0
         while i < amount:
             if direction == 'left':
                 self.canvas.move(disc, m*-1, 0)
@@ -63,6 +66,8 @@ class HanoiGameGui(object):
 
 
     def moveDiscToTower(self, disc, tower):
+        if self.canvas == None:
+            return
 
         # gets the disc GUI element from self.discs with the given index
         discGUI = [d for d in self.discs if d.index == disc][0]

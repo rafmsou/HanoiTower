@@ -1,20 +1,79 @@
 import unittest
+from hanoiGame import HanoiGame
+from tower import Tower
 
 class TestHanoiGameMoves(unittest.TestCase):
 
-  def test_one_possible_move(self):
-      self.assertEqual('foo'.upper(), 'FOO')
-
-  def test_two_possible_moves(self):
-      self.assertTrue('FOO'.isupper())
-      self.assertFalse('Foo'.isupper())
-
-  def test_five_moves(self):
-      s = 'hello world'
-      self.assertEqual(s.split(), ['hello', 'world'])
-      # check that s.split fails when the separator is not a string
-      with self.assertRaises(TypeError):
-          s.split(2)
+  def test_action(self):
+      hg = HanoiGame(None)
+      hg.move()
+      self.assertEqual(hg.left_tower.top(), 1)
+      hg.move()
+      self.assertEqual(hg.right_tower.top(), 2)
+      hg.move()
+      self.assertEqual(hg.right_tower.top(), 1)
+      hg.move()
+      self.assertEqual(hg.left_tower.top(), 3)
+      hg.move()
+      self.assertEqual(hg.central_tower.top(), 1)
+      hg.move()
+      self.assertEqual(hg.left_tower.top(), 2)
+      hg.move()
+      self.assertEqual(hg.left_tower.top(), 1)
+      hg.move()
+      self.assertEqual(hg.right_tower.top(), 4)
+      hg.move()
+      self.assertEqual(hg.right_tower.top(), 1)
+      hg.move()
+      self.assertEqual(hg.central_tower.top(), 2)
+      hg.move()
+      self.assertEqual(hg.central_tower.top(), 1)
+      hg.move()
+      self.assertEqual(hg.right_tower.top(), 3)
+      hg.move()
+      self.assertEqual(hg.left_tower.top(), 1)
+      hg.move()
+      self.assertEqual(hg.right_tower.top(), 2)
+      hg.move()
+      self.assertEqual(hg.right_tower.top(), 1)
+      hg.move()
+      self.assertEqual(hg.left_tower.top(), 5)
+      hg.move()
+      self.assertEqual(hg.central_tower.top(), 1)
+      hg.move()
+      self.assertEqual(hg.left_tower.top(), 2)
+      hg.move()
+      self.assertEqual(hg.left_tower.top(), 1)
+      hg.move()
+      self.assertEqual(hg.central_tower.top(), 3)
+      hg.move()
+      self.assertEqual(hg.right_tower.top(), 1)
+      hg.move()
+      self.assertEqual(hg.central_tower.top(), 2)
+      hg.move()
+      self.assertEqual(hg.central_tower.top(), 1)
+      hg.move()
+      self.assertEqual(hg.left_tower.top(), 4)
+      hg.move()
+      self.assertEqual(hg.right_tower.top(), 1)
+      hg.move()
+      self.assertEqual(hg.left_tower.top(), 2)
+      hg.move()
+      self.assertEqual(hg.central_tower.top(), 1)
+      hg.move()
+      self.assertEqual(hg.right_tower.top(), 2)
+      hg.move()
+      self.assertEqual(hg.right_tower.top(), 1)
+      hg.move()
+      self.assertEqual(hg.left_tower.top(), 3)
+      hg.move()
+      self.assertEqual(hg.central_tower.top(), 1)
+      hg.move()
+      self.assertEqual(hg.left_tower.top(), 2)
+      hg.move()
+      self.assertEqual(hg.left_tower.top(), 1)
+      hg.move()
+      self.assertEqual(hg.right_tower.top(), 6)
 
 if __name__ == '__main__':
     unittest.main()
