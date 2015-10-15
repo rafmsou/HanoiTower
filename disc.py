@@ -1,4 +1,4 @@
-class DiscGui(object):
+class Disc(object):
 
     def __init__(self, discObject, discIndex):
         self.disc = discObject

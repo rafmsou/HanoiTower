@@ -1,17 +1,17 @@
-import math
-from discGui import DiscGui
+import math, time, queue
+from disc import Disc
 
 class HanoiGameGui(object):
 
     def __init__(self, canvas):
         self.canvas = canvas
 
-        #disc configuration
+        # disc configuration
         self.discs = []
         self.discsLength = 7
         self.discsColor = ['#e6dbb1','#e8e2cc']
 
-        #tower configuration
+        # tower configuration
         self.towersLocation = [[214, 217],[326, 217],[437, 217]]
 
     def initializeDiscs(self):
@@ -46,11 +46,11 @@ class HanoiGameGui(object):
         colorFill = self.discsColor[index % 2]
 
         disc = self.canvas.create_oval(x0, y0, x1, y1, outline='red', fill=colorFill, width=2)
-        return DiscGui(disc, index)
+        return Disc(disc, index)
 
     def moveDisc(self, disc, direction, amount):
 
-        m,i = 10,0
+        m,i = 1,0
         while i < amount:
             if direction == 'left':
                 self.canvas.move(disc, m*-1, 0)
@@ -61,22 +61,22 @@ class HanoiGameGui(object):
             elif direction == 'down':
                 self.canvas.move(disc, 0, m)
 
-            self.canvas.update()
+            if i % 10 == 0:
+                self.canvas.update()
             i += m
-
 
     def moveDiscToTower(self, disc, tower):
         if self.canvas == None:
             return
 
         # gets the disc GUI element from self.discs with the given index
-        discGUI = [d for d in self.discs if d.index == disc][0]
+        discObject = [d for d in self.discs if d.index == disc][0]
 
-        discCurrentTower = discGUI.currentTower
+        discCurrentTower = discObject.currentTower
         discDestinationTower = tower.index
         discDestinationPosition = len(tower) + 1
         moveUpLimit = 110
-        discX0, discY0, discX1, discY1 = self.canvas.coords(discGUI.disc)
+        discX0, discY0, discX1, discY1 = self.canvas.coords(discObject.disc)
         discWidth = discX1 - discX0
         towerX, towerY = self.towersLocation[tower.index]
 
@@ -89,8 +89,8 @@ class HanoiGameGui(object):
         baseToDestinationDistance = (discDestinationPosition -  1) * 10
         downAmount = (towerY - moveUpLimit) - baseToDestinationDistance
 
-        self.moveDisc(discGUI.disc, 'up', upAmount)
-        self.moveDisc(discGUI.disc, moveDirection, moveAmount)
-        self.moveDisc(discGUI.disc, 'down', downAmount)
+        self.moveDisc(discObject.disc, 'up', upAmount)
+        self.moveDisc(discObject.disc, moveDirection, moveAmount)
+        self.moveDisc(discObject.disc, 'down', downAmount)
 
-        discGUI.currentTower = discDestinationTower
+        discObject.currentTower = discDestinationTower

@@ -12,6 +12,19 @@ class HanoiGame(HanoiGameGui):
         self.right_tower = Tower('Torre Direita', 2)
         self.disc_1_mutex = True
 
+    def move(self):
+        if self.disc_1_mutex:
+            self.forward_move(1)
+            self.disc_1_mutex = False
+        else:
+            disc_on_left = self.left_tower.top()
+            disc_on_center = self.central_tower.top()
+            disc_on_right = self.right_tower.top()
+            values = [v for v in [disc_on_left, disc_on_center, disc_on_right] if v != 1 and v > 0]
+            minValue = min(values)
+            self.forward_move(minValue)
+            self.disc_1_mutex = True
+
     def able_tower(self, d, tower):
         if len(tower) == 0:
             return True
@@ -57,7 +70,6 @@ class HanoiGame(HanoiGameGui):
     def disc1_new_tower(self, tower_a, tower_b):
 
         print('inside disc1_new_tower >>>')
-
         current_tree = []
         disc1_current_tower = self.get_tower(1)
 
@@ -105,22 +117,12 @@ class HanoiGame(HanoiGameGui):
         if d in self.right_tower:
             self.right_tower.pop()
 
-        self.write_movement(d, tower)
+        #self.write_movement(d, tower)
         super(HanoiGame, self).moveDiscToTower(d, tower)
         tower.append(d)
 
     def write_movement(self, d, tower):
         print(d, '=>', tower)
 
-    def move(self):
-        if self.disc_1_mutex:
-            self.forward_move(1)
-            self.disc_1_mutex = False
-        else:
-            disc_on_left = self.left_tower.top()
-            disc_on_center = self.central_tower.top()
-            disc_on_right = self.right_tower.top()
-            values = [v for v in [disc_on_left, disc_on_center, disc_on_right] if v != 1 and v > 0]
-            minValue = min(values)
-            self.forward_move(minValue)
-            self.disc_1_mutex = True
+    def animate(self):
+        super(HanoiGame, self).animateFromQueue()
