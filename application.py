@@ -9,17 +9,17 @@ class Application(tk.Frame):
         self.createWidgets()
 
     def createWidgets(self):
-        self.moveButton = tk.Button(self, text='Resolver', command=self.solveAction, width=7)
+        self.moveButton = tk.Button(self, text='Resolver', command=self.solveAction, width=10)
         self.moveButton.grid(row=1, column=2, sticky=tk.E)
 
-        self.resetButton = tk.Button(self, text='Reiniciar', command=self.resetStage, width=7)
+        self.resetButton = tk.Button(self, text='Reiniciar', command=self.resetStage, width=10)
         self.resetButton.grid(row=2, column=2, sticky=tk.E)
 
         self.coordsLabelValue = tk.StringVar()
         self.coordsLabel = tk.Label(self, textvariable=self.coordsLabelValue)
         self.coordsLabel.grid(row=3, columnspan=5)
 
-        self.quitButton = tk.Button(self, text='Fechar',command=self.closeAction, width=7)
+        self.quitButton = tk.Button(self, text='Fechar',command=self.closeAction, width=10)
         self.quitButton.grid(row=4, column=4, sticky=tk.E)
 
         self.resetStage()

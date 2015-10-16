@@ -1,4 +1,4 @@
-import math, time, queue
+import math, time, queue, platform
 from disc import Disc
 
 class HanoiGameGui(object):
@@ -49,6 +49,7 @@ class HanoiGameGui(object):
         return Disc(disc, index)
 
     def moveDisc(self, disc, direction, amount):
+        isWindows = self.isWindowsOS()
 
         m,i = 1,0
         while i < amount:
@@ -60,10 +61,14 @@ class HanoiGameGui(object):
                 self.canvas.move(disc, 0, m*-1)
             elif direction == 'down':
                 self.canvas.move(disc, 0, m)
+            i += m
 
+            if isWindows:
+                time.sleep(0.001)
+            
             if i % 10 == 0:
                 self.canvas.update()
-            i += m
+
 
     def moveDiscToTower(self, disc, tower):
         if self.canvas == None:
@@ -94,3 +99,9 @@ class HanoiGameGui(object):
         self.moveDisc(discObject.disc, 'down', downAmount)
 
         discObject.currentTower = discDestinationTower
+
+    def isWindowsOS(self):
+        if str.lower(platform.system()) == 'windows':
+            return True
+
+        return False
