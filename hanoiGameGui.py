@@ -9,7 +9,7 @@ class HanoiGameGui(object):
         # disc configuration
         self.discs = []
         self.discsLength = 7
-        self.discsColor = ['#e6dbb1','#e8e2cc']
+        self.discsColor = ['#e6dbb1','#e8d88b']
 
         # tower configuration
         self.towersLocation = [[214, 217],[326, 217],[437, 217]]
@@ -65,7 +65,7 @@ class HanoiGameGui(object):
 
             if isWindows:
                 time.sleep(0.001)
-            
+
             if i % 10 == 0:
                 self.canvas.update()
 
