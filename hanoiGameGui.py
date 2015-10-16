@@ -9,7 +9,7 @@ class HanoiGameGui(object):
         # disc configuration
         self.discs = []
         self.discsLength = 7
-        self.discsColor = ['#e6dbb1','#e8d88b']
+        self.discsColor = ['#9D9D9D','#E0E0E0']
 
         # tower configuration
         self.towersLocation = [[214, 217],[326, 217],[437, 217]]
@@ -45,7 +45,7 @@ class HanoiGameGui(object):
 
         colorFill = self.discsColor[index % 2]
 
-        disc = self.canvas.create_oval(x0, y0, x1, y1, outline='red', fill=colorFill, width=2)
+        disc = self.canvas.create_oval(x0, y0, x1, y1, outline='black', fill=colorFill, width=3)
         return Disc(disc, index)
 
     def moveDisc(self, disc, direction, amount):
