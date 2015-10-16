@@ -18,7 +18,7 @@ class HanoiGameGui(object):
         if self.canvas == None:
             return
 
-        baseWidthDiameter = 100
+        baseWidthDiameter = 120
         widthDiameter = baseWidthDiameter
         widthDiameterOffset = 10
         heightDiameter = 20

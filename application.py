@@ -1,5 +1,6 @@
 import tkinter as tk
 from hanoiGame import HanoiGame
+from threading import Thread
 
 class Application(tk.Frame):
     def __init__(self, master=None):
@@ -8,11 +9,11 @@ class Application(tk.Frame):
         self.createWidgets()
 
     def createWidgets(self):
-        self.resetButton = tk.Button(self, text='Reiniciar', command=self.resetStage, width=7)
-        self.resetButton.grid(row=1, column=2, sticky=tk.E)
+        self.moveButton = tk.Button(self, text='Resolver', command=self.solveAction, width=7)
+        self.moveButton.grid(row=1, column=2, sticky=tk.E)
 
-        self.moveButton = tk.Button(self, text='Mover', command=self.moveAction, width=7)
-        self.moveButton.grid(row=2, column=2, sticky=tk.E)
+        self.resetButton = tk.Button(self, text='Reiniciar', command=self.resetStage, width=7)
+        self.resetButton.grid(row=2, column=2, sticky=tk.E)
 
         self.coordsLabelValue = tk.StringVar()
         self.coordsLabel = tk.Label(self, textvariable=self.coordsLabelValue)
@@ -39,11 +40,10 @@ class Application(tk.Frame):
         y = self.canvas.canvasy(event.y)
         self.coordsLabelValue.set('x: {} y: {}'.format(x, y))
 
-    def moveAction(self):
+    def solveAction(self):
         self.moveButton['state'] = 'disabled'
         self.hanoiGame.move()
-        self.moveButton['state'] = 'active'
-
+        self.after(5, self.solveAction)
 
     def closeAction(self):
         self.quit()
