@@ -7,9 +7,9 @@ class HanoiGame(HanoiGameGui):
     def __init__(self, canvas):
         super(HanoiGame, self).__init__(canvas)
         discs = range(1, 8)
-        self.left_tower = Tower('Torre Esquerda', 0)
-        self.central_tower = Tower('Torre Central', 1, sorted(discs, reverse=True))
-        self.right_tower = Tower('Torre Direita', 2)
+        self.left_tower = Tower('Torre Esquerda', TowerPosition.Left)
+        self.central_tower = Tower('Torre Central', TowerPosition.Center, sorted(discs, reverse=True))
+        self.right_tower = Tower('Torre Direita', TowerPosition.Right)
         self.disc_1_mutex = True
 
     def move(self):

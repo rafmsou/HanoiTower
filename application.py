@@ -28,12 +28,9 @@ class Application(tk.Frame):
     def resetStage(self):
         self.canvas = tk.Canvas(self, height=350, width=600)
         self.canvas.grid(row=0, columnspan=5, sticky=tk.W)
-        self.photo = tk.PhotoImage(file='./discs_base.gif')
-        self.canvas.create_image(330,200, image=self.photo)
         self.canvas.bind('<Motion>', self.printCurrentCoords)
 
         self.hanoiGame = HanoiGame(self.canvas)
-        self.hanoiGame.initializeDiscs()
 
     def printCurrentCoords(self, event):
         x = self.canvas.canvasx(event.x)
