@@ -35,7 +35,7 @@ class TowerGui(object):
         x0, y0 = self.getTowerBaseCoords(TowerPosition.Left)
         x0, y0 = (x0 - 80), (y0 + 15)
         x1, y1 = self.getTowerBaseCoords(TowerPosition.Right)
-        x1, y1 = (x1 + 80), (y1 + 50)
+        x1, y1 = (x1 + 80), (y1 + 30)
 
         self.canvas.create_rectangle(x0, y0, x1, y1, outline='black', fill='#E0E0E0', width=3)
 

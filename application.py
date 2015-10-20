@@ -7,15 +7,16 @@ class Application(tk.Frame):
         tk.Frame.__init__(self, master)
         self.grid()
         self.createWidgets()
+        self.motionEnabled = True
 
     def createWidgets(self):
-        self.moveButton = tk.Button(self, text='Resolver', command=self.solveAction, width=10)
-        self.moveButton.grid(row=1, column=1, sticky=tk.E)
+        self.solveButton = tk.Button(self, text='Resolver', command=self.solveAction, width=10)
+        self.solveButton.grid(row=1, column=1, sticky=tk.E)
 
         self.resetButton = tk.Button(self, text='Reiniciar', command=self.resetStage, width=10)
         self.resetButton.grid(row=2, column=1, sticky=tk.E)
 
-        self.stopButton = tk.Button(self, text='Parar', command=self.resetStage, width=10)
+        self.stopButton = tk.Button(self, text='Parar', command=self.stopMotion, width=10)
         self.stopButton.grid(row=3, column=1, sticky=tk.E)
 
         self.movementsValue = tk.StringVar()
@@ -42,20 +43,29 @@ class Application(tk.Frame):
 
         self.hanoiGame = HanoiGame(self.canvas)
 
+        self.solveButton['state'] = 'active'
+        self.addDisc['state'] = 'active'
+        self.removeDisc['state'] = 'active'
+        self.motionEnabled = True
+
+    def stopMotion(self):
+        self.motionEnabled = False
+
     def printCurrentCoords(self, event):
         x = self.canvas.canvasx(event.x)
         y = self.canvas.canvasy(event.y)
         self.coordsLabelValue.set('x: {} y: {}'.format(x, y))
 
     def solveAction(self):
-        self.moveButton['state'] = 'disabled'
-        self.addDisc['state'] = 'disabled'
-        self.removeDisc['state'] = 'disabled'
-        
-        self.hanoiGame.move()
-        movs = self.hanoiGame.moveCount
-        self.movementsValue.set('Movimentos: {}'.format(movs))
-        self.after(5, self.solveAction)
+        if self.motionEnabled:
+            self.solveButton['state'] = 'disabled'
+            self.addDisc['state'] = 'disabled'
+            self.removeDisc['state'] = 'disabled'
+
+            self.hanoiGame.move()
+            movs = self.hanoiGame.moveCount
+            self.movementsValue.set('Movimentos: {}'.format(movs))
+            self.after(5, self.solveAction)
 
 
 app = Application()
