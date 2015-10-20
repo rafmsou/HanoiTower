@@ -11,6 +11,7 @@ class HanoiGame(HanoiGameGui):
         self.central_tower = Tower('Torre Central', TowerPosition.Center, sorted(discs, reverse=True))
         self.right_tower = Tower('Torre Direita', TowerPosition.Right)
         self.disc_1_mutex = True
+        self.moveCount = 0
 
     def move(self):
         if self.disc_1_mutex:
@@ -24,6 +25,8 @@ class HanoiGame(HanoiGameGui):
             minValue = min(values)
             self.forward_move(minValue)
             self.disc_1_mutex = True
+
+        self.moveCount += 1
 
     def able_tower(self, d, tower):
         if len(tower) == 0:

@@ -26,13 +26,27 @@ class TowerGui(object):
             tower = self.canvas.create_rectangle(x0, y0, x1, y1, outline='black', fill='#E0E0E0', width=3)
             self.towers.append(tower)
 
+        self.drawTowersBase()
+
+    def drawTowersBase(self):
+        if self.canvas == None:
+            return
+
+        x0, y0 = self.getTowerBaseCoords(TowerPosition.Left)
+        x0, y0 = (x0 - 80), (y0 + 15)
+        x1, y1 = self.getTowerBaseCoords(TowerPosition.Right)
+        x1, y1 = (x1 + 80), (y1 + 50)
+
+        self.canvas.create_rectangle(x0, y0, x1, y1, outline='black', fill='#E0E0E0', width=3)
+
+
     def getTowerBaseCoords(self, towerPosition):
         tower = self.towers[towerPosition.value]
         x0, y0, x1, y1 = self.canvas.coords(tower)
         x = x0
         y = y1
 
-        #an offset to give a little space
+        #an offset to give a little space from the base
         y -= 25
         #the center of the tower
         x += self.towerWidth / 2
