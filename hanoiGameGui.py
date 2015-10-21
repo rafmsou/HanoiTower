@@ -4,11 +4,11 @@ from towerGui import TowerGui
 
 class HanoiGameGui(object):
 
-    def __init__(self, canvas):
+    def __init__(self, canvas, numDiscs):
         self.canvas = canvas
         self.towerGui = TowerGui(self.canvas)
         self.towerGui.initializeTowers()
-        self.discGui = DiscGui(self.canvas, self.towerGui)
+        self.discGui = DiscGui(self.canvas, self.towerGui, numDiscs)
         self.discGui.initializeDiscs()
 
     def moveDisc(self, disc, direction, amount):

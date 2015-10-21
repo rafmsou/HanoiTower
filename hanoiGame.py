@@ -4,9 +4,9 @@ from hanoiGameGui import HanoiGameGui
 
 class HanoiGame(HanoiGameGui):
 
-    def __init__(self, canvas):
-        super(HanoiGame, self).__init__(canvas)
-        discs = range(1, 8)
+    def __init__(self, canvas, numDiscs = 3):
+        super(HanoiGame, self).__init__(canvas, numDiscs)
+        discs = range(1, numDiscs + 1)
         self.left_tower = Tower('Torre Esquerda', TowerPosition.Left)
         self.central_tower = Tower('Torre Central', TowerPosition.Center, sorted(discs, reverse=True))
         self.right_tower = Tower('Torre Direita', TowerPosition.Right)
@@ -72,7 +72,6 @@ class HanoiGame(HanoiGameGui):
 
     def disc1_new_tower(self, tower_a, tower_b):
 
-        print('inside disc1_new_tower >>>')
         current_tree = []
         disc1_current_tower = self.get_tower(1)
 
@@ -83,17 +82,9 @@ class HanoiGame(HanoiGameGui):
             i-=1
             current_tree.append(disc1_current_tower[i])
 
-        print('current tree', current_tree)
-
         max_current_tree = max(current_tree)
-        print('max current tree', max_current_tree)
-
         len_current_tree = len(current_tree)
-        print('len current tree', len_current_tree)
-
         len_is_odd = len_current_tree % 2 != 0
-        print ('len is odd', len_is_odd)
-
         building_tower = self.get_tower(max_current_tree + 1)
         if len_is_odd:
             if building_tower == tower_a:
@@ -126,6 +117,3 @@ class HanoiGame(HanoiGameGui):
 
     def write_movement(self, d, tower):
         print(d, '=>', tower)
-
-    def animate(self):
-        super(HanoiGame, self).animateFromQueue()

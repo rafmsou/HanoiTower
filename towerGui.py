@@ -6,7 +6,7 @@ class TowerGui(object):
         self.towers = []
 
         # tower configuration
-        self.towersInitCoords = [185, 140]
+        self.towersInitCoords = [150, 140]
         self.towersDistance = 150
         self.towerWidth = 14
         self.towerHeight = 120
@@ -35,7 +35,7 @@ class TowerGui(object):
         x0, y0 = self.getTowerBaseCoords(TowerPosition.Left)
         x0, y0 = (x0 - 80), (y0 + 15)
         x1, y1 = self.getTowerBaseCoords(TowerPosition.Right)
-        x1, y1 = (x1 + 80), (y1 + 30)
+        x1, y1 = (x1 + 80), (y1 + 40)
 
         self.canvas.create_rectangle(x0, y0, x1, y1, outline='black', fill='#E0E0E0', width=3)
 

@@ -2,13 +2,13 @@ from disc import Disc
 from tower import TowerPosition
 
 class DiscGui(object):
-    def __init__(self, canvas, towerGui):
+    def __init__(self, canvas, towerGui, numDiscs = 3):
         self.canvas = canvas
         self.towerGui = towerGui
 
         # disc configuration
         self.discs = []
-        self.discsLength = 7
+        self.discsLength = numDiscs
         self.discsColor = ['#9D9D9D','#E0E0E0']
         self.baseWidthDiameter = 120
         self.widthDiameter = self.baseWidthDiameter
